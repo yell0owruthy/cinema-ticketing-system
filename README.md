@@ -1,8 +1,4 @@
-Markdown
-<div align="center">
-  <img src="public/image/logo.png" alt="Logo Bioskop" width="120">
-
-  # 🎬 Sistem Informasi Tiket Bioskop (Cinema Ticketing System)
+🎬 Sistem Informasi Tiket Bioskop (Cinema Ticketing System)
 
   Aplikasi pemesanan tiket bioskop berbasis web yang dirancang secara profesional dengan fitur manajemen jadwal, pemesanan tiket, dan pelaporan rekapitulasi data dinamis. Proyek ini dibangun untuk memenuhi persyaratan Uji Kompetensi / Sertifikasi Keahlian Rekayasa Perangkat Lunak (RPL).
 
@@ -12,93 +8,191 @@ Markdown
   ![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)
 </div>
 
----
 
-## ✨ Fitur Utama
 
-Sistem ini menggunakan multi-autentikasi (Breeze) yang membagi hak akses menjadi dua peran utama:
+# Sistem Pemesanan Tiket Bioskop
 
-### 🛡️ Administrator (Admin)
-- **Dashboard Statistik:** Ringkasan aktivitas dan menu pintasan utama.
-- **Kelola Jadwal & Film:** CRUD data jadwal tayang, deskripsi film, dan harga tiket.
-- **Kelola Penonton:** Manajemen data akun pengguna yang terdaftar di sistem.
-- **Laporan Penjualan:** Rekapitulasi transaksi pemesanan tiket dengan fitur **Filter Rentang Tanggal (Periode)** serta kalkulasi otomatis total tiket terjual dan total pendapatan.
+Aplikasi web untuk mengelola jadwal tayang film dan pemesanan tiket bioskop. Admin dapat mengelola jadwal, harga tiket, data penonton, dan laporan transaksi. Penonton dapat melihat jadwal, memesan tiket, serta memeriksa riwayat pemesanan.
 
-### 👤 Penonton (User)
-- **Katalog Film:** Menampilkan daftar film yang sedang tayang beserta jadwal dan harga tiket.
-- **Pemesanan Tiket:** Form pemesanan tiket bioskop secara real-time.
-- **Riwayat Transaksi:** Tabel riwayat pembelian tiket bioskop beserta status pembayaran dan total harga.
+## Fitur
 
----
+### Admin
 
-## 🛠️ Teknologi yang Digunakan
+- Dashboard admin.
+- Menambah, melihat, mengubah, dan menghapus jadwal tayang beserta harga tiket.
+- Mengelola data akun penonton.
+- Melihat laporan transaksi berdasarkan rentang tanggal, termasuk jumlah tiket terjual dan total pendapatan.
 
-- **Framework:** Laravel 10 / 11
-- **Frontend:** Blade Templating, Tailwind CSS, Alpine.js
-- **Database:** MySQL
-- **Autentikasi:** Laravel Breeze
-- **Ikon & Tipografi:** SVG Icons, Google Fonts
+### Penonton
 
----
+- Membuat akun, masuk, dan mengelola profil.
+- Melihat katalog jadwal film dan harga tiket.
+- Memesan satu atau lebih tiket.
+- Melihat riwayat pemesanan dan total pembayaran.
 
-## 🚀 Panduan Instalasi (Local Development)
+### Sistem
 
-Ikuti langkah-langkah berikut untuk menjalankan project ini di komputer lokal Anda:
+- Hak akses dibedakan berdasarkan peran `admin` dan `user`.
+- Data aplikasi disimpan di SQLite secara default.
+- Antarmuka dirender menggunakan Blade, dengan aset frontend yang dibangun melalui Vite dan Tailwind CSS.
 
-**1. Clone Repository**
-```bash
-git clone [https://github.com/username-kamu/nama-repo-kamu.git](https://github.com/username-kamu/nama-repo-kamu.git)
-cd nama-repo-kamu
-2. Install Dependencies
+## Teknologi
 
-Bash
-composer install
-npm install
-3. Konfigurasi Environment
-Duplikat file .env.example menjadi .env, lalu atur koneksi database Anda:
+- PHP 8.2+
+- Laravel 12
+- SQLite
+- Blade
+- Tailwind CSS 3
+- Vite 7
+- Alpine.js
 
-Bash
-cp .env.example .env
-php artisan key:generate
-(Pastikan Anda sudah membuat database kosong di MySQL/phpMyAdmin, misalnya bernama db_bioskop, lalu sesuaikan DB_DATABASE di dalam file .env)
+## Persyaratan
 
-4. Migrasi Database & Seeder Data Dummy
-Jalankan perintah ini untuk membangun struktur tabel dan mengisi 15 data dummy penonton beserta riwayat transaksi otomatis:
+Pastikan perangkat sudah memiliki:
 
-Bash
-php artisan migrate
-php artisan db:seed --class=PemesananSeeder
-5. Kompilasi Aset Frontend & Jalankan Server
-Buka dua terminal berbeda dan jalankan perintah berikut secara bersamaan:
+- PHP 8.2 atau lebih baru, dengan ekstensi PHP yang dibutuhkan Laravel (termasuk `pdo_sqlite` untuk database bawaan).
+- [Composer](https://getcomposer.org/).
+- [Node.js dan npm](https://nodejs.org/).
 
-Bash
-# Terminal 1 (Untuk memproses Tailwind CSS)
-npm run dev
+## Instalasi
 
-# Terminal 2 (Untuk menjalankan server Laravel)
+Jalankan perintah berikut dari direktori proyek. Contoh ini menggunakan PowerShell di Windows.
+
+1. Pasang dependensi PHP:
+
+   ```powershell
+   composer install
+   ```
+
+2. Siapkan konfigurasi lingkungan dan database SQLite:
+
+   ```powershell
+   if (-not (Test-Path .env)) { Copy-Item .env.example .env }
+   if (-not (Test-Path database\database.sqlite)) {
+       New-Item -ItemType File -Path database\database.sqlite | Out-Null
+   }
+   ```
+
+   Perintah ini mempertahankan file `.env` dan database SQLite yang sudah ada. Pastikan konfigurasi database di `.env` menunjuk ke SQLite atau database lain yang ingin digunakan.
+
+3. Buat application key dan jalankan migrasi:
+
+   ```powershell
+   php artisan key:generate
+   php artisan migrate
+   ```
+
+4. Pasang dependensi frontend dan bangun aset:
+
+   ```powershell
+   npm install
+   npm run build
+   ```
+
+## Menjalankan aplikasi
+
+Untuk menjalankan server Laravel, worker antrean, log, dan Vite secara bersamaan dalam mode pengembangan:
+
+```powershell
+composer run dev
+```
+
+Atau jalankan server Laravel dan Vite secara terpisah di dua terminal:
+
+```powershell
 php artisan serve
-Aplikasi kini dapat diakses melalui browser di: http://127.0.0.1:8000
+```
 
-🔐 Akses Akun Dummy (Seeder)
-Gunakan kredensial berikut untuk masuk ke dalam sistem:
+```powershell
+npm run dev
+```
 
-Akses Admin:
+Kemudian buka [http://localhost:8000](http://localhost:8000).
 
-Email: admin@bioskop.com
+## Data awal dan akun demo
 
-Password: password
+Untuk membuat akun demo yang didefinisikan di `DatabaseSeeder`, jalankan:
 
-Akses Penonton (Pilih salah satu dari 15 dummy):
+```powershell
+php artisan db:seed
+```
 
-Email: dummy1@bioskop.com (bisa diganti angka 1-15)
+Seeder menyediakan akun berikut:
 
-Password: password
+| Peran yang dimaksud | Email | Kata sandi |
+| --- | --- | --- |
+| Admin | `admin@bioskop.com` | `password` |
+| Penonton | `penonton@bioskop.com` | `password` |
 
-📸 Dokumentasi Antarmuka (Screenshots)
-(Tambahkan screenshot aplikasi Anda di sini nanti untuk mempercantik repositori)
+**Catatan:** model `User` saat ini tidak memasukkan kolom `role` ke daftar mass-assignment. Akibatnya, peran yang diberikan oleh seeder dapat tersimpan sebagai `user` (peran default database). Jika akun demo admin belum dapat membuka area admin, ubah perannya melalui Tinker:
 
-Screenshot Dashboard Admin
+```powershell
+php artisan tinker
+```
 
-Screenshot Halaman Laporan
+```php
+\App\Models\User::where('email', 'admin@bioskop.com')->update(['role' => 'admin']);
+```
 
-Screenshot Halaman Pemesanan User
+Keluar dari Tinker dengan `exit`. Akun demo menggunakan kata sandi sederhana dan hanya untuk pengembangan lokal—ganti atau hapus akun tersebut sebelum aplikasi digunakan di lingkungan lain.
+
+Seeder opsional `PemesananSeeder` membuat data film, jadwal, harga, serta data pemesanan contoh:
+
+```powershell
+php artisan db:seed --class=PemesananSeeder
+```
+
+## Pengujian dan build
+
+Jalankan pengujian aplikasi:
+
+```powershell
+composer test
+```
+
+Build aset frontend untuk penggunaan non-development:
+
+```powershell
+npm run build
+```
+
+## Struktur proyek
+
+```text
+app/
+  Http/Controllers/    Controller autentikasi, admin, dan pemesanan
+  Http/Middleware/     Middleware pemeriksaan peran
+  Models/              Model User, Film, Jadwal, HargaTiket, Pemesanan
+database/
+  migrations/          Struktur tabel dan relasi database
+  seeders/             Akun serta data contoh
+resources/
+  views/               Halaman Blade untuk admin, penonton, dan autentikasi
+  js/                  Entry point JavaScript
+  css/                 Entry point stylesheet
+routes/
+  web.php              Route web aplikasi
+tests/
+  Feature/             Pengujian fitur dan autentikasi
+  Unit/                Pengujian unit
+```
+
+## Alur data utama
+
+- Satu film dapat memiliki beberapa jadwal tayang.
+- Setiap jadwal memiliki harga tiket.
+- Pemesanan menghubungkan akun penonton dengan jadwal, jumlah tiket, total harga, dan status.
+- Laporan admin menghitung pendapatan dan jumlah tiket dari data pemesanan pada periode yang dipilih.
+
+## Catatan implementasi
+
+- Pemesanan saat ini langsung diberi status **Lunas**. Integrasi payment gateway belum tersedia.
+- Data film dibuat saat admin menambahkan jadwal; judul yang belum ada akan dibuat otomatis.
+- Tidak ada pengelolaan jumlah kursi atau kapasitas studio pada implementasi saat ini.
+- Konfigurasi bawaan proyek menggunakan SQLite. Sesuaikan variabel `DB_*` di `.env` jika ingin menggunakan database lain.
+- Jangan gunakan `.env` lokal atau akun demo dengan kata sandi bawaan untuk deployment produksi.
+
+## Lisensi
+
+Proyek ini menggunakan kerangka kerja Laravel. Lisensi kode aplikasi mengikuti ketentuan yang ditetapkan oleh pemilik proyek.
+#
